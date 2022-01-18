@@ -8,11 +8,11 @@
 #include "addons/TokenHelper.h";
 #include "addons/RTDBHelper.h";
 
-const char* ssid = "home3";
-const char* password = "10203040";
+const char* ssid = "XXXX";
+const char* password = "12345678";
 
-#define API_KEY "AIzaSyCwHGSxvUlZTZqqfwP0qAvH0_V3Ky5kZZo";
-#define DATABASE_URL "https://rainmeter-44805-default-rtdb.firebaseio.com/"
+#define API_KEY "**************************************";
+#define DATABASE_URL "*****************************************"
 
 FirebaseData fbdo;
 FirebaseAuth auth;
