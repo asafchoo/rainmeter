@@ -16,7 +16,7 @@ void setup() {
 void loop() {
   for (int count = 0; count < 10; count++) {
     digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
+    delay(500);         
     digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
