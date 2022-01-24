@@ -18,7 +18,8 @@ file: usensor-filer-by-100.ino
 # stage 5: sleep 2 min interval
 
 # stage 6: full rainmeter
-Libraries: 
+Libraries:
+
 https://github.com/me-no-dev/ESPAsyncTCP
 
 https://github.com/me-no-dev/ESPAsyncWebServer
