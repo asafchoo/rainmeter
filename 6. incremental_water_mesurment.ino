@@ -1,7 +1,10 @@
 #include <ESP8266WiFi.h>
 #include "ThingSpeak.h"
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncElegantOTA.h>
 
-WiFiServer server(80);
+AsyncWebServer server(80);
 
 #define echoPin 4 // הפין אקו (Echo) של החיישן האולטרסוני
 #define trigPin 5 //הפין טריג (trig) של החיישן האולטרסוני
@@ -10,8 +13,8 @@ float duration; // variable for the duration of sound wave travel
 float mm; // variable for the distance measurement
 
 float measurements[] = {};
-float bottom = 0;
-float lastm = 0;
+float wholeseason;
+float lastm;
 int x;
 
 const char* ssid = "home3";   // your network SSID (name)
@@ -28,7 +31,15 @@ void setup() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
   WiFi.mode(WIFI_STA);
+  wifi_set_sleep_type(LIGHT_SLEEP_T);
   ThingSpeak.begin(client);  // Initialize ThingSpeak
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", "Hi! I am ESP8266.");
+  });
+
+  AsyncElegantOTA.begin(&server);    // Start ElegantOTA
+  server.begin();
 }
 
 void loop() {
@@ -39,6 +50,8 @@ void loop() {
       delay(1000);
       Serial.print(".");
     }
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
     Serial.println("\nConnected.");
 
     for (int count = 0; count < 10; count++) {
@@ -51,27 +64,22 @@ void loop() {
       mm = (duration * 0.034 / 2) * 10; // Speed of sound wave divided by 2 (go and back)
       measurements[count] = mm;
     }
-    float sendvalue = lowestnumber();
+    float sendvalue = lowestnumber();  
+   
+    if (lastm < sendvalue) lastm = sendvalue;    
     
-    Serial.print("bottom: "); Serial.print(bottom); Serial.print("| sendvalue: "); Serial.print(sendvalue); Serial.print("| lastm: "); Serial.println(lastm);
-    
-    if (bottom == 0.00) bottom = sendvalue;
-    
-    float sendrealvalue = bottom - sendvalue - lastm;
-    
-    if (bottom > sendvalue+5) {
-      x = ThingSpeak.writeField(myChannelNumber, 1, sendrealvalue, myWriteAPIKey);
-      lastm = sendrealvalue;
-    } else x = 0;
-    bottom = sendvalue;
-    delay(20000);
+    float valueofdif = lastm - sendvalue;
+    wholeseason = wholeseason + valueofdif;
+    Serial.print("| המדידה הקודמת: "); Serial.print(lastm); Serial.print("| המדידה הנוכחית: "); Serial.print(sendvalue); Serial.print("ההפרש: "); Serial.println(valueofdif);
+    x = ThingSpeak.writeField(myChannelNumber, 1, valueofdif, myWriteAPIKey);
+    lastm = sendvalue;
     if (x == 200) {
       Serial.println("Channel update successful.");
       Serial.println("going to sleep!");
-      //ESP.deepSleep(120e6);
-      
+      delay(300000);
       Serial.println("woke up! lets go to measure rain!");
     }
+   
   }
 }
 float calculatefrequent(float a[], int size) {
