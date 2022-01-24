@@ -17,4 +17,8 @@ file: usensor-filer-by-100.ino
 
 # stage 5: sleep 2 min interval
 
-*remember:* needs to connect rst pin to D0 for the sleep to work, and disconnect rst pin for upload new code!
+# stage 6: full rainmeter
+Libraries: 
+https://github.com/me-no-dev/ESPAsyncTCP
+https://github.com/me-no-dev/ESPAsyncWebServer
+https://github.com/ayushsharma82/AsyncElegantOTA
