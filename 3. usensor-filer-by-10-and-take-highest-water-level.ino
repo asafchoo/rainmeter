@@ -24,7 +24,7 @@ void loop() {
     mm = (duration * 0.034 / 2) * 10; // Speed of sound wave divided by 2 (go and back)
     measurements[count] = mm;
   }
-  lowestnumber();
+  calculateavrage(10);
 }
 
 float calculatefrequent(float a[], int size) {
@@ -49,14 +49,14 @@ float calculatefrequent(float a[], int size) {
   return mostnum;
 }
 
-float lowestnumber(){
-   float lowest = 0; 
-   float check = 0;
-   for (int q=0; q<10; q++) {
-    check = calculatefrequent(measurements,10);
-    if (lowest < check) lowest = check;
-   }
-   Serial.print("lowest: ");        
-  Serial.println(check);
-  return check;
+loat calculateavrage(int size) {
+  float avrge;
+  for (int i=0; i <size; i++) {        /*- עבור כל i  -*/
+      float val = calculatefrequent(measurements,10);
+      avrge+=val;             
+  }
+  float av = avrge / size;
+  Serial.print("Avrage: ");            
+  Serial.println(av);  
+  return av;
 }
