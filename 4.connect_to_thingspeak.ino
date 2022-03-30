@@ -1,8 +1,3 @@
-#include <ESP8266WiFi.h>
-#include "ThingSpeak.h" 
-
-WiFiServer server(80);
-
 #define echoPin 4 // הפין אקו (Echo) של החיישן האולטרסוני
 #define trigPin 5 //הפין טריג (trig) של החיישן האולטרסוני
 
@@ -11,54 +6,25 @@ float mm; // variable for the distance measurement
 
 float measurements[] = {};
 
-const char* ssid = "home3";   // your network SSID (name) 
-const char* password = "10203040";   // your network password
-
-WiFiClient client;
-
-unsigned long myChannelNumber = 1635956;
-const char * myWriteAPIKey = "XYKCRSX1PPT9JB0Y";
-
 void setup() {
   // put your setup code here, to run once:
  Serial.begin(115200);
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
-  WiFi.mode(WIFI_STA);   
-  ThingSpeak.begin(client);  // Initialize ThingSpeak
 }
 
 void loop() {
-  Serial.println(" "); 
-  WiFi.begin(ssid, password);
-  if(WiFi.status() != WL_CONNECTED){
-    Serial.print("Attempting to connect");
-    while(WiFi.status() != WL_CONNECTED){  
-      delay(1000);     
-      Serial.print("."); 
-    } 
-   Serial.println(" "); 
-   Serial.println("\nConnected.");
-    
-   for (int count = 0; count < 10; count++) {
-      digitalWrite(trigPin, LOW);
-      delay(100);             
-      digitalWrite(trigPin, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(trigPin, LOW);
-      duration = pulseIn(echoPin, HIGH);
-      mm = (duration * 0.034 / 2) * 10; // Speed of sound wave divided by 2 (go and back)
-      measurements[count] = mm;
-   }
-   float sendvalue = lowestnumber();
-   int x = ThingSpeak.writeField(myChannelNumber, 1, sendvalue, myWriteAPIKey);
-   if(x == 200){
-    Serial.println("Channel update successful.");
-   } else {
-    Serial.println("Problem updating channel. HTTP error code " + String(x));
-   }
- }
- delay(5000);
+  for (int count = 0; count < 10; count++) {
+    digitalWrite(trigPin, LOW);
+    delay(100);             
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    mm = (duration * 0.034 / 2) * 10; // Speed of sound wave divided by 2 (go and back)
+    measurements[count] = mm;
+  }
+  calculateavrage(10);
 }
 
 float calculatefrequent(float a[], int size) {
@@ -83,14 +49,14 @@ float calculatefrequent(float a[], int size) {
   return mostnum;
 }
 
-float lowestnumber(){
-   float lowest = 0; 
-   float check = 0;
-   for (int q=0; q<10; q++) {
-    check = calculatefrequent(measurements,10);
-    if (lowest < check) lowest = check;
-   }
-   Serial.print("lowest: ");        
-  Serial.println(check);
-  return check;
+loat calculateavrage(int size) {
+  float avrge;
+  for (int i=0; i <size; i++) {        /*- עבור כל i  -*/
+      float val = calculatefrequent(measurements,10);
+      avrge+=val;             
+  }
+  float av = avrge / size;
+  Serial.print("Avrage: ");            
+  Serial.println(av);  
+  return av;
 }
