@@ -1,5 +1,5 @@
-#define echoPin 4 // הפין אקו (Echo) של החיישן האולטרסוני
-#define trigPin 5 //הפין טריג (trig) של החיישן האולטרסוני
+#define trigPin 4 //הפין טריג (trig) של החיישן האולטרסוני
+#define echoPin 5 // הפין אקו (Echo) של החיישן האולטרסונישל החיישן האולטרסוני
 
 float duration; // variable for the duration of sound wave travel
 float mm; // variable for the distance measurement
