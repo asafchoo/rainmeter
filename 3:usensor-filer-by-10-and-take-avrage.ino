@@ -50,7 +50,6 @@ float calculatefrequent(float a[], int size) {
         mostnum = a[i];                      /*- וזה המספר החדש -*/
       }
   }
-  delay(2000);
   Serial.print("Most Frequent: ");            /*- אחרי שנעשה את זה עשר פעמים -*/
   Serial.println(mostnum);  /*- המספר שמופיע הכי הרבה פעמים נמצא במשתנה הזה -*/
   return mostnum;
