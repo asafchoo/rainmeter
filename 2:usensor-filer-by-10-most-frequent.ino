@@ -1,5 +1,5 @@
 #define trigPin 4 //הפין טריג (trig) של החיישן האולטרסוני
-#define echoPin 5 // הפין אקו (Echo) של החיישן האולטרסונישל החיישן האולטרסוני
+#define echoPin 5 // הפין אקו (Echo) של החיישן האולטרסוני
 
 float duration; // variable for the duration of sound wave travel
 float mm; // variable for the distance measurement
@@ -7,9 +7,8 @@ float mm; // variable for the distance measurement
 float measurements[] = {};
 
 void setup() {
-  // put your setup code here, to run once:
- Serial.begin(115200);
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
+   Serial.begin(115200);
+   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
 }
 
@@ -37,24 +36,18 @@ float calculatefrequent(float a[], int size) {
   for (int i=0; i <size; i++) {        /*- עבור כל i  -*/
       delay(200);             
       currentnum=a[i];             /*- המספר שנחקר כרגע הוא הi במערך -*/
+      Serial.print(i+1);
+      Serial.print(": ");
+      Serial.println(currentnum);
       int count = 0;                 /*- משתנה שסופר כמה פעמים הוא מופיע -*/
       for (int j=0;j <size; j++) {          /*- עבור כל j -*/
         if ( a[i] != mostnum) {                  /*- אם אנו חוקרים מספר שונה מהגבוה ביותר -*/
-          if (currentnum == a[j]) count += 1;            /*- אז אם המספר הנחקר שווה לזה שמופיע במערך במיקום j ספור +1 -*/
-          delay(200);         
-          Serial.print("for ");               
-          Serial.print(a[i]);          
-          Serial.print(" :");
-          Serial.println(count);
+          if (currentnum == a[j]) count += 1;            /*- אז אם המספר הנחקר שווה לזה שמופיע במערך במיקום j ספור +1 -*/   
         }
       }
       if (count > most) {                     /*- אם המספר הנחקר מופיע יותר פעמים מקודמיו -*/
         most = count;                         /*- אז זו כמות הפעמים שהמספר החדש מופיע -*/
         mostnum = a[i];                      /*- וזה המספר החדש -*/
-        Serial.print("most: ");
-        Serial.println(most);
-        Serial.print("mostnum: ");
-        Serial.println(mostnum);
       }
   }
   delay(2000);
