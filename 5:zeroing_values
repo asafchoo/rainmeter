@@ -55,7 +55,7 @@ void loop() {
     measurements[count] = mm;
   }
 
-  float sendvalue = calculateavrage(10) - zeroing;       /*  איפוס המדידה = הפחתת הערך הנמדד מהערך שמתאר את האפס, ובכך נקבל את הגובה האמיתי של הנוזל */
+  float sendvalue =  zeroing - calculateavrage(10);       /*  איפוס המדידה = הפחתת הערך הנמדד מהערך שמתאר את האפס, ובכך נקבל את הגובה האמיתי של הנוזל */
   if (sendvalue < 0) sendvalue = 0;                     /* אם משום מה המדידה יצאה נמוכה מאפס, תשווה לאפס (כי אין מינוס משקעים) */
   
   int x = ThingSpeak.writeField(myChannelNumber, 1, sendvalue, myWriteAPIKey);
