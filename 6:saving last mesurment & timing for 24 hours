@@ -82,7 +82,10 @@ void loop() {
   }
   else Serial.println("Unable to read channel / No internet connection");
 
-  ESP.deepSleep(864e8);    /* ללכת לישון ל864 בחזקת 8 שניות, שזה 24 שעות */ 
+ // ESP.deepSleep(864e8);    /* ללכת לישון ל864 בחזקת 8 שניות, שזה 24 שעות */ 
+  ESP.deepSleep(120e6);    /* זאת שינה קצרה של 120 שניות, לצורך זמן הבדיקה - אחר כך אפשר למחוק */ 
+  ESP.reset();             /* לא בטוח שהכרחי, אבל זו פונקציית איפוס חזק לכל המעבד */ 
+
 }
 
 float calculatefrequent(float a[], int size) {
