@@ -78,6 +78,7 @@ void loop() {
          Serial.println("Problem updating channel. HTTP error code " + String(x));      /* אם לא תודיע דרך הערוץ הסיריאלי שזה לא הצליח */
       }
     }
+    else Serial.println("Channel connection is O.K. but no value to upload cause change in water hight did not accure";   /* הדפס במסך הסיריאלי הודעה זו אם ההתחברות הייתה מוצלחת אבל לא היה מה לשלוח */
   }
   else Serial.println("Unable to read channel / No internet connection");
 
