@@ -15,7 +15,7 @@ float measurements[] = {};
 
 const char* ssid = "home";   // your network SSID (name) 
 const char* password = "10203040";   // your network password
-const float zeroing = 146.71;        /*  כאן מדביקים את המספר שהחיישן מודד כגובה המיכל הריק   */
+const float zeroing = xxx.xx;        /*  כאן מדביקים את המספר שהחיישן מודד כגובה המיכל הריק - כמו 146.71 */
 
 WiFiClient client;
 
@@ -67,9 +67,8 @@ void loop() {
   if (statusCode == 200) {                  /* אם הכל התרחש בסדר עם הקריאה האחרונה מthingspeak*/
     if ((sendvalue) > temp+1){              /* אם הערך הנמדד גדול מהערך ששמרנו במסד הנתונים ועוד מ"מ אחד - מניעת זליגה */
       int dailyamount = sendvalue - temp;   /* תגדיר ערך חדש - בשם dailyamount - הכמות היומית - ותחשב אותה מחיסור של הערך החדש מהערך הקודם */
-      temp = sendvalue;                     /* עכשיו תשווה את הערך במסד הנתונים לערך החדש, כדי שפעם הבאה שנתעורר נדע שזה הערך האחרון שמדדנו */
       ThingSpeak.setField(1,dailyamount);  /* תעלה את הכמות היומית לשדה מספר 1 בthingspeak */
-      ThingSpeak.setField(2,temp);         /* תעלה את הערך החדש שמדדנו לשדה מספר שתיים בthingspaek */
+      ThingSpeak.setField(2,sendvalue);         /* תעלה את הערך החדש שמדדנו לשדה מספר שתיים בthingspaek */
       int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);    /* שלח את שני הערכים לערוץ הנכון בthingspeak */
 
       if(x == 200){    /* אם ההחזר מהאתר בסדר (200 זה בסדר) */
