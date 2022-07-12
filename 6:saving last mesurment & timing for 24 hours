@@ -73,7 +73,7 @@ void loop() {
 
       if(x == 200){    /* אם ההחזר מהאתר בסדר (200 זה בסדר) */
          Serial.println("Channel update successful.");         /* תדפיס במסך הסיריאלי שהערוץ התעדכן בהצלחה  */  
-         Serial.println("Uploaded" + String(dailyamoint,3));     /*  תדפיס את הערך שהעלת לthingspeak */
+         Serial.println("Uploaded" + String(dailyamount,3));     /*  תדפיס את הערך שהעלת לthingspeak */
       } else {
          Serial.println("Problem updating channel. HTTP error code " + String(x));      /* אם לא תודיע דרך הערוץ הסיריאלי שזה לא הצליח */
       }
